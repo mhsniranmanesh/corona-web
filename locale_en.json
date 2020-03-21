@@ -1,0 +1,108 @@
+{
+    "name" : "en",
+    "title" : "English",
+    "rtl" : false,
+    "errors": {
+        "server_connection_error": "Error connecting to server ...",
+        "aggreement_error": "Please agree Terms and Conditions",
+        "phone_number_wrong_error": "Phone number is not valid"
+    },
+    "on_board": {
+        "next_button": "Next",
+        "agree_button": "OK",
+        "welcome": {
+            "title": "Welcome to Coronatic"
+        },
+        "assess": {
+            "title": "Find your status by answering the self-assessment"
+        },
+        "contacts": {
+            "title": "You can then add friends and relatives your Connections list."
+        },
+        "status": {
+            "title": "If they are also in the app, you can see their status and take care of them, so suggest them to use the app as well."
+        },
+        "radar": {
+            "title": "On the Radar you can see the status of other users around you"
+        },
+        "map": {
+            "title": "On the map you can see the status of all users in the world live"
+        },
+        "share": {
+            "title": "Note that the status of the people you are indirectly communicating with (such as a friend of your friend) will be reported to you anonymously in order to take better care of yourself and those around you."
+        }
+    },
+    "login": {
+        "phone_title": "Phone Number",
+        "phone_description": "Please enter your phone number",
+        "phone_number_reason": "Login with phone number is necessary to prevent fake logins and data",
+        "aggreement": "I agree the Terms and Conditions",
+        "phone_placeholder": "Phone number",
+        "phone_accept_button": "OK",
+        "otp_title": "Verification Code",
+        "otp_decsription": "Verification code has been sent to this number : ",
+        "otp_placeholder": "verification Code",
+        "correct_phone_number": "Edit phone number",
+        "resend_otp": "Didn't get the code ? send again",
+        "go_back": "Back",
+        "otp_accept_button": "OK",
+        "field_cannot_be_empty": "This field can not be empty",
+        "otp_wrong_error": "Wrong Verification Code",
+        "otp_wait_error": "Please retry after 2 minutes"
+    },
+    "assess": {
+        "title": "Assess",
+        "close_button": "Later",
+        "ok_button": "OK",
+        "prev_question": "Back",
+        "intro": {
+            "title": "Attention",
+            "description": "This self-assessment test is based on World Health Orgonization (WHO) guidlines"
+        },
+        "description": "Description",
+        "waiting": "Just a moment ..."
+    },
+    "dashboard": {
+        "new_test_button": "New Test",
+        "my_status": {
+            "title": "My Status"
+        },
+        "contacts": {
+            "title": "Connections Status",
+            "center_circle": "Me",
+            "first_orbit": "1st orbit: The status of your direct connections e.g. your friend",
+            "second_orbit": "2nd orbit: Status of people who are in touch with the people in 1st orbit. e.g. a friend of your friend",
+            "third_orbit": "3rd orbit: Status of people who are in touch with the people in 2nd orbit. e.g. a friend of that friend of your friend !",
+            "statuses": "Status Info",
+            "status_none": "Unknown",
+            "status_green": "Normal",
+            "status_yellow": "Warning",
+            "status_red": "Immediate attention"
+        }
+    },
+    "profile": {
+        "tree": {
+            "title": "Connections Tree",
+            "description1": "You can add your connections to the list below in order to see their status.",
+            "description2": "Please add up to 10 people you have direct contact with at least once a week.",
+            "me": "Me",
+            "enter_connection_name": "Please enter connection name",
+            "enter_connection_phone": "Please enter connection phone number",
+            "add_contact_button": "Add to list",
+            "add_new_connection": "Adding new connection",
+            "field_cannot_be_empty": "This field can not be empty",
+            "confirm": "Add"
+        }
+    },
+    "radar": {
+        "title": "Radar",
+        "description1": "Turn on the radar to see the status of users around you.",
+        "description2": "Radar data is based on the results of other users' test responses.",
+        "browser_does_not_support_geolocation": "جستوگر شما از قابلیت مکان یابی پشتیبانی نمی‌کند!",
+        "turn_geolocation_on": "Please allow Access to location",
+        "getting_your_location": "Waiting for fix location...",
+        "on_button": "ON",
+        "off_button": "OFF"
+    },
+    "map": {}
+}
