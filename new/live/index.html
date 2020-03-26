@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>\
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <meta charset="utf-8" />
     <title>Create a heatmap layer</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -15,8 +15,9 @@
         }
 
         #map {
-            position: absolute;
+            height: 100%;
             top: 0;
+            left: 0;
             bottom: 0;
             width: 100%;
         }
@@ -38,22 +39,72 @@
             top: 0px;
             width: 100%;
             height: 100%;
-            z-index: 9999;
+        
             background: url("loading.gif") center no-repeat #000;
         }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .map-container {
+            flex:1;
+        }
+
+        .button-conatiner {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 3rem;
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+        .button {
+            display: block;
+            background-color: #46b5d1;
+            color: white;
+            font-weight: bold;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 1.3rem;
+            width: 60%;
+            border-radius: 0.5rem;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            text-decoration: none;  
+            max-width: 20rem;
+        }
+        .button:hover {
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+
     </style>
 
 </head>
 
 <body>
-
+   
     <div class="se-pre-con"></div>
 
-    <div>
-        <div id="map"></div>
-        <button class="button">Button</button>
+    <div class="container">
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
     </div>
-
+    <div class="button-conatiner">
+        <a class="button" href="https://app.fectogram.com/api/v1/analytics/visit/?source=map">
+            See More
+        </a>
+    </div>
+   
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoibW9oM2VuaXIiLCJhIjoiY2s3bDR0emoxMDN0dzNlbXQ2dnh1bWM4MiJ9.M2bI7iEstl2As2-xet7JHQ';
         var map = new mapboxgl.Map({
