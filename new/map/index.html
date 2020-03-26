@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>\
+    <meta charset="utf-8" />
+    <title>Create a heatmap layer</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .no-js #loader {
+            display: none;
+        }
+
+        .js #loader {
+            display: block;
+            position: absolute;
+            left: 100px;
+            top: 0;
+        }
+
+        .se-pre-con {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url("loading.gif") center no-repeat #000;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="se-pre-con"></div>
+
+    <div>
+        <div id="map"></div>
+        <button class="button">Button</button>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibW9oM2VuaXIiLCJhIjoiY2s3bDR0emoxMDN0dzNlbXQ2dnh1bWM4MiJ9.M2bI7iEstl2As2-xet7JHQ';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [-120, 50],
+            zoom: 2
+        });
+
+        map.on('load', function () {
+            // Add a geojson point source.
+            // Heatmap layers also work with a vector tile source.
+            map.addSource('users', {
+                'type': 'geojson',
+                'data':
+                    'https://fectogram.com/static/map/fall.json'
+            });
+
+            map.addLayer(
+                {
+                    'id': 'marker',
+                    'type': 'heatmap',
+                    'source': 'users',
+                    'paint': {
+                        // Increase the heatmap weight based on frequency and property magnitude
+                        "heatmap-weight": {
+                            property: "priceIndicator",
+                            type: "exponential",
+                            stops: [
+                                [0, 0],
+                                [5, 2]
+                            ]
+                        },
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        "heatmap-intensity": {
+                            stops: [
+                                [0, 0],
+                                [5, 1.2]
+                            ]
+                        },
+                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                        // Begin color ramp at 0-stop with a 0-transparancy color
+                        // to create a blur-like effect.
+                        "heatmap-color": [
+                            "interpolate",
+                            ["linear"],
+                            ["heatmap-density"],
+                            0,
+                            "rgba(200,0,0,0)",
+                            0.1,
+                            "rgba(200,200,200,0.2)",
+                            0.2,
+                            "rgba(200,150,150,0.3)",
+                            0.4,
+                            "rgba(200,100,100,0.6)",
+                            0.6,
+                            "rgba(200,50,50,0.9)",
+                            0.8,
+                            "rgb(200,10,10)"
+                        ],
+                        // Adjust the heatmap radius by zoom level
+                        "heatmap-radius": {
+                            stops: [
+                                [10, 20],
+                                [60, 50]
+                            ]
+                        }
+                    }
+                },
+            );
+
+            map.on('idle',function(){
+                $(".se-pre-con").fadeOut("slow");
+            })
+
+
+        });
+    </script>
+
+</body>
+
+
+</html>
