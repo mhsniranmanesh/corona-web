@@ -146,11 +146,12 @@
     </div>
     <div id="visit-button" class="button-conatiner">
         <a class="button" href="https://app.fectogram.com/api/v1/analytics/visit/?source=map">
-            Click here to zoom more and check your status 
+            Click here to zoom more and check your status
         </a>
     </div>
 
     <script>
+        var loading = true;
         $("#visit-button").fadeOut("fast");
         mapboxgl.accessToken = 'pk.eyJ1IjoibW9oM2VuaXIiLCJhIjoiY2s3bDR0emoxMDN0dzNlbXQ2dnh1bWM4MiJ9.M2bI7iEstl2As2-xet7JHQ';
         var map = new mapboxgl.Map({
@@ -170,34 +171,36 @@
                     'https://fectogram.com/static/map/fall.json'
             });
 
-            map.addLayer(
-                {
-                    'id': 'marker',
-                    'type': 'heatmap',
-                    'source': 'users',
-                    'maxzoom': MAX_ZOOM,
-                    'paint': {
-                        // Increase the heatmap weight based on frequency and property magnitude
-                        "heatmap-weight": {
-                            property: "priceIndicator",
-                            type: "exponential",
-                            stops: [
-                                [0, 0],
-                                [5, 2]
-                            ]
-                        },
-                        // Increase the heatmap color weight weight by zoom level
-                        // heatmap-intensity is a multiplier on top of heatmap-weight
-                        "heatmap-intensity": {
-                            stops: [
-                                [0, 0],
-                                [5, 1.2]
-                            ]
-                        },
-                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-                        // Begin color ramp at 0-stop with a 0-transparancy color
-                        // to create a blur-like effect.
-                        "heatmap-color": [
+            map.addSource('users1', {
+                'type': 'geojson',
+                'data':
+                    'https://fectogram.com/static/map/chunk1.json'
+            });
+
+            map.addSource('users2', {
+                'type': 'geojson',
+                'data':
+                    'https://fectogram.com/static/map/chunk2.json'
+            });
+
+            const heatmap_weight = {
+                property: "priceIndicator",
+                type: "exponential",
+                stops: [
+                    [0, 0],
+                    [5, 2]
+                ]
+            }
+
+            const heatmap_intensity = {
+                stops: [
+                    [0, 0],
+                    [5, 1.2]
+                ]
+            }
+            
+
+            const heatmap_color = [
                             "interpolate",
                             ["linear"],
                             ["heatmap-density"],
@@ -213,18 +216,95 @@
                             "rgba(200,50,50,0.9)",
                             0.8,
                             "rgb(200,10,10)"
-                        ],
+                        ]
+
+            const heatmap_radius = [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                0,
+                8,
+                36,
+                80
+            ]
+
+            map.addLayer(
+                {
+                    'id': 'marker',
+                    'type': 'heatmap',
+                    'source': 'users',
+                    'maxzoom': MAX_ZOOM,
+                    'paint': {
+                        // Increase the heatmap weight based on frequency and property magnitude
+                        "heatmap-weight": heatmap_weight,
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        "heatmap-intensity": heatmap_intensity,
+                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                        // Begin color ramp at 0-stop with a 0-transparancy color
+                        // to create a blur-like effect.
+                        'heatmap-color': heatmap_color,
                         // Adjust the heatmap radius by zoom level
-                        "heatmap-radius": {
-                            stops: [
-                                [10, 20],
-                                [60, 50]
-                            ]
-                        }
+                        'heatmap-radius': heatmap_radius,
+                    }
+                },
+            );
+
+            map.addLayer(
+                {
+                    'id': 'marker1',
+                    'type': 'heatmap',
+                    'source': 'users1',
+                    'maxzoom': MAX_ZOOM,
+                    'paint': {
+                        // Increase the heatmap weight based on frequency and property magnitude
+                        "heatmap-weight": heatmap_weight,
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        "heatmap-intensity": heatmap_intensity,
+                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                        // Begin color ramp at 0-stop with a 0-transparancy color
+                        // to create a blur-like effect.
+                        'heatmap-color': heatmap_color,
+                        // Adjust the heatmap radius by zoom level
+                        'heatmap-radius': heatmap_radius,
+                    }
+                },
+            );
+
+            map.addLayer(
+                {
+                    'id': 'marker2',
+                    'type': 'heatmap',
+                    'source': 'users2',
+                    'maxzoom': MAX_ZOOM,
+                    'paint': {
+                        // Increase the heatmap weight based on frequency and property magnitude
+                        "heatmap-weight": heatmap_weight,
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        "heatmap-intensity": heatmap_intensity,
+                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                        // Begin color ramp at 0-stop with a 0-transparancy color
+                        // to create a blur-like effect.
+                        'heatmap-color': heatmap_color,
+                        // Adjust the heatmap radius by zoom level
+                        'heatmap-radius': heatmap_radius,
                     }
                 },
             );
         });
+
+        function sourceCallback() {
+            // assuming 'map' is defined globally, or you can use 'this'
+            if (loading == true && map.getSource('users') && map.isSourceLoaded('users')) {
+                $(".se-pre-con").fadeOut("slow");
+                loading = false
+            }
+        }
+
+        map.on('sourcedata', sourceCallback);
+
 
         map.on('idle', function () {
             $(".se-pre-con").fadeOut("slow");
@@ -232,10 +312,10 @@
 
         map.on('zoom', () => {
             const currentZoom = map.getZoom();
-            if(currentZoom >= MAX_ZOOM){
+            if (currentZoom >= MAX_ZOOM) {
                 $("#visit-button").fadeIn("fast");
             }
-            if(currentZoom < MAX_ZOOM){
+            if (currentZoom < MAX_ZOOM) {
                 $("#visit-button").fadeOut("fast");
             }
         });
