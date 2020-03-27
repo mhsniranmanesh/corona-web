@@ -30,11 +30,12 @@
 
     <meta property="og:site_name" content="Fectogram" />
     <meta property="og:title" content="Fectogram Live Map !" />
-    <meta property="og:description" content="Explore the realtime statistics of epidemic diseases in the world, and your communication chain." />
+    <meta property="og:description"
+        content="Explore the realtime statistics of epidemic diseases in the world, and your communication chain." />
     <meta property="og:image" itemprop="image" content="https://fectogram.com/favicon/favicon-96x96.png">
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fectogram.com/https://fectogram.com" />
-    
+
 
     <!-- <meta property="og:image" content="https://fectogram.com/favicon/favicon-96x96.png" />
     <meta property="og:image:type" content="image/png" />
@@ -51,7 +52,6 @@
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
     <style>
-
         body {
             margin: 0;
             padding: 0;
@@ -85,8 +85,9 @@
             top: 0;
             left: 0;
         }
+
         .map-container {
-            flex:1;
+            flex: 1;
         }
 
         .button-conatiner {
@@ -94,29 +95,31 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            top: 3rem;
+            top: 50%;
             left: 0;
             right: 0;
             width: 100%;
         }
+
         .button {
             display: block;
-            background-color: #46b5d1;
+            background-color: #0842D3;
             color: white;
             font-weight: bold;
-            font-family: "Courier New", Courier, monospace;
+            font-family: "Arial", "Courier New", Courier, monospace;
             font-size: 1.3rem;
             width: 60%;
             border-radius: 0.5rem;
             padding: 1rem 2rem;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.8);
-            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-            text-decoration: none;  
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            text-decoration: none;
             max-width: 20rem;
         }
+
         .button:hover {
-            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
         }
 
         .se-pre-con {
@@ -128,13 +131,12 @@
             z-index: 2;
             background: url("loading.gif") center no-repeat #000;
         }
-
     </style>
 
 </head>
 
 <body>
-   
+
     <div class="se-pre-con"></div>
 
     <div class="container">
@@ -142,13 +144,14 @@
             <div id="map"></div>
         </div>
     </div>
-    <div class="button-conatiner">
+    <div id="visit-button" class="button-conatiner">
         <a class="button" href="https://app.fectogram.com/api/v1/analytics/visit/?source=map">
-            See More
+            Click here to zoom more and check your status 
         </a>
     </div>
-   
+
     <script>
+        $("#visit-button").fadeOut("fast");
         mapboxgl.accessToken = 'pk.eyJ1IjoibW9oM2VuaXIiLCJhIjoiY2s3bDR0emoxMDN0dzNlbXQ2dnh1bWM4MiJ9.M2bI7iEstl2As2-xet7JHQ';
         var map = new mapboxgl.Map({
             container: 'map',
@@ -157,6 +160,7 @@
             zoom: 2
         });
 
+        let MAX_ZOOM = 10
         map.on('load', function () {
             // Add a geojson point source.
             // Heatmap layers also work with a vector tile source.
@@ -171,6 +175,7 @@
                     'id': 'marker',
                     'type': 'heatmap',
                     'source': 'users',
+                    'maxzoom': MAX_ZOOM,
                     'paint': {
                         // Increase the heatmap weight based on frequency and property magnitude
                         "heatmap-weight": {
@@ -219,12 +224,20 @@
                     }
                 },
             );
+        });
 
-            map.on('idle',function(){
-                $(".se-pre-con").fadeOut("slow");
-            })
+        map.on('idle', function () {
+            $(".se-pre-con").fadeOut("slow");
+        });
 
-
+        map.on('zoom', () => {
+            const currentZoom = map.getZoom();
+            if(currentZoom >= MAX_ZOOM){
+                $("#visit-button").fadeIn("fast");
+            }
+            if(currentZoom < MAX_ZOOM){
+                $("#visit-button").fadeOut("fast");
+            }
         });
     </script>
 
